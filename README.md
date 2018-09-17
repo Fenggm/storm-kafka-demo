@@ -1,17 +1,18 @@
 # storm-kafka-demo
 
-##本案例采用的为Apache-storm-1.1.1.
+## 本案例采用的为Apache-storm-1.1.1.
 
 可在本地运行,也可package后在集群环境中运行.
 若需要在集群环境中运行,为避免依赖的jar包冲突,在package前,需将pom.xml文件中的 <scope>provided</scope>的注释放开.
 
 该项目包含storm的入门案例wordcount,以及和kafka的整合案例.
 
-##Storm当中的分组策略，一共有八种：
+## Storm当中的分组策略，一共有八种：
+
 所谓的grouping策略就是在Spout与Bolt、Bolt与Bolt之间传递Tuple的方式。总共有八种方式：
+
  1）shuffleGrouping（随机分组）随机分组；将tuple随机分配到bolt中，能够保证各task中处理的数据均衡；
- 2）fieldsGrouping（按照字段分组，在这里即是同一个单词只能发送给一个Bolt）
-按字段分组； 根据设定的字段相同值得tuple被分配到同一个bolt进行处理；
+ 2）fieldsGrouping（按照字段分组，在这里即是同一个单词只能发送给一个Bolt）按字段分组； 根据设定的字段相同值得tuple被分配到同一个bolt进行处理；
 举例：builder.setBolt("mybolt", new MyStoreBolt(),5).fieldsGrouping("checkBolt",new Fields("uid"));
 说明：该bolt由5个任务task执行，相同uid的元组tuple被分配到同一个task进行处理；该task接收的元祖字段是mybolt发射出的字段信息，不受uid分组的影响。
     该分组不仅方便统计而且还可以通过该方式保证相同uid的数据保存不重复（uid信息写入数据库中唯一）；
